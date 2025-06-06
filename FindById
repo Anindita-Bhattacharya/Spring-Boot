@@ -1,0 +1,83 @@
+Controller.java 
+
+  @GetMapping("/name/{name}")
+    public User getUserByName(@PathVariable("name") String name) {
+        return userService.getUserByName(name);
+    }}
+
+
+Repo.java
+
+package firstspring;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface Repository extends JpaRepository<User, Long>{
+	User findByName(String name);
+}
+
+
+UserService.java
+
+package firstspring;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+
+    @Autowired
+    private Repository userRepository; // Correct placement of @Autowired
+
+    public User getUserByName(String name) {
+        return userRepository.findByName(name);
+    }}
+
+User.java
+
+  package firstspring;
+
+import jakarta.annotation.Generated;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="Users")
+public class User {
+    // Getters and Setters
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id; // Primary key
+    private String name; // User's name
+    private String email; // User's email
+    // Default constructor
+    public User() {}
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+}
+
+
+
+
